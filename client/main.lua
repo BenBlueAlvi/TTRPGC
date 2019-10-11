@@ -2,9 +2,11 @@ push = require 'push'
 Class = require 'class'
 json = require 'json'
 
+require 'Geo'
 require 'client'
 require 'Chat'
 require 'StateMachine'
+require 'Button'
 require 'states/PlayState'
 require 'states/MenuState'
 require 'states/LevelCreationState'
@@ -29,6 +31,20 @@ connTimer = 1
 
 
 
+
+
+
+gFonts = {
+	['small'] = love.graphics.newFont("font.ttf", 8),
+	['medium'] = love.graphics.newFont("font.ttf", 16),
+	['large'] = love.graphics.newFont("font.ttf", 32)
+}
+
+gColors = {
+	['black'] = {0,0,0},
+	['white'] = {255,255,255}
+}
+
 gStateMachine = StateMachine({
 	['play'] =  PlayState(),
 	['menu'] =  MenuState(),
@@ -36,7 +52,6 @@ gStateMachine = StateMachine({
 	['systemCreation'] =  SystemCreationState()
 
 })
-
 
 function love.load()
 	love.keyboard.keysPressed = {}
@@ -53,14 +68,14 @@ function love.load()
         vsync = true
     })
 
-	love.graphics.setFont(love.graphics.newFont("font.ttf", 8))
 	
 	
 	
 	
 	
-	chat = Chat()
-	gStateMachine:change('play', 0)
+	
+	
+	gStateMachine:change('menu')
 	
 	
 	
@@ -125,9 +140,11 @@ end
 
 function displayFPS()
     -- simple FPS display across all states
-   
+	love.graphics.setFont(gFonts.small)
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, VIRTUAL_HEIGHT - 18)
 end
+
+
 
 

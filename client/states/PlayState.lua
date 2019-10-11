@@ -5,7 +5,7 @@ PID = math.random(1, 1000)
 
 function PlayState:init()
 	love.graphics.setDefaultFilter("nearest", "nearest")
-
+	chat = Chat()
 	
 end
 
