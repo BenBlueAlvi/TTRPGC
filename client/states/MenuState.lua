@@ -12,6 +12,9 @@ function MenuState:init()
 	
 	mapButton = Button(VIRTUAL_WIDTH/4, 100 + 25, VIRTUAL_WIDTH/2, 18, "map creator", gFonts.medium, gColors.white, "line", gColors.white)
 	mapButton:setHoverState("fill", gColors.white, gColors.black)
+	
+	--textBox = TextBox(32, 30, 8*20, 16)
+	textBox = DropdownBox(32, 30, 3 * 8, "Stat", {"STR", "INT", "DEX"})
 end
 
 
@@ -24,9 +27,7 @@ function MenuState:exitt()
 end
 
 function MenuState:update(dt)
-	mx, my = love.mouse.getPosition()
-	mx = mx/3
-	my = my/3
+	mx, my = love.mouse.getAbsPos()
 	playButton:update(mx, my)
 	sysButton:update(mx, my)
 	mapButton:update(mx, my)
@@ -41,6 +42,7 @@ function MenuState:update(dt)
 		gStateMachine:change('levelCreation')
 	end
 	
+	textBox:update(mx, my)
 end
 
 function MenuState:draw()
@@ -48,5 +50,8 @@ function MenuState:draw()
 	playButton:draw()
 	sysButton:draw()
 	mapButton:draw()
+	textBox:draw()
+	
+	love.graphics.rectangle("line", 10, VIRTUAL_HEIGHT-10 - 32, 32, 32)
 	
 end

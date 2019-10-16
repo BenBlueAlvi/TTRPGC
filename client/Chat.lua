@@ -4,55 +4,7 @@ Chat = Class{}
 function Chat:init()
 	self.lines = {}
 	self.typeLine = ""
-	self.highCase = {
-		["1"] = '!',
-		["2"] = '@',
-		["3"] = '#',
-		["4"] = '$',
-		["5"] = '%',
-		["6"] = '^',
-		["7"] = '&',
-		["8"] = '*',
-		["9"] = '(',
-		["0"] = ')',
-		["`"] = '~',
-		["-"] = '_',
-		["="] = '+',
-		["["] = '{',
-		["]"] = '}',
-		["\\"] = '|',
-		[";"] = ':',
-		["'"] = '"',
-		[","] = '<',
-		["."] = '>',
-		["/"] = '?',
-		["q"] = 'Q',
-		["w"] = 'W',
-		["e"] = 'E',
-		["r"] = 'R',
-		["t"] = 'T',
-		["y"] = 'Y',
-		["u"] = 'U',
-		["i"] = 'I',
-		["o"] = 'O',
-		["p"] = 'P',
-		["a"] = 'A',
-		["s"] = 'S',
-		["d"] = 'D',
-		["f"] = 'F',
-		["g"] = 'G',
-		["h"] = 'H',
-		["j"] = 'J',
-		["k"] = 'K',
-		["l"] = 'L',
-		["z"] = 'Z',
-		["x"] = 'X',
-		["c"] = 'C',
-		["v"] = 'V',
-		["b"] = 'B',
-		["n"] = 'N',
-		["m"] = 'M',
-	}
+	
 		
 end
 
@@ -73,25 +25,32 @@ function Chat:update()
 	for k, v in pairs(love.keyboard.keysPressed) do
 	
 	
-		if v and k ~= 'return' then
+		if v and k ~= 'return' and k ~= 'backspace' then
 			new = k
 			if love.keyboard.shiftDown then
 				new = string.upper(new)
-			end
-			if k == 'space' then
+			elseif k == 'space' then
 				new = ' ' 
-			end
-			if k == 'lshift' or k == 'rshift' or k == 'lctrl' or k == 'rctrl' then
+			elseif k == 'lshift' or k == 'rshift' or k == 'lctrl' or k == 'rctrl' then
 				new = ''
 			end
+			
+			
 			if love.keyboard.shift and string.len(new) > 0 then
-				print("Checkpoint 2")
-				new = self.highCase[new]
-				print("Checkpoint 3")
+				
+				new = highCase[new]
+				
 			end
+			
+			
 			
 			self.typeLine = self.typeLine .. new
 		
+		end
+		
+		if k == 'backspace' then
+			print('back')
+			self.typeLine = string.sub(self.typeLine, 1, string.len(self.typeLine) -1)
 		end
 		
 	end

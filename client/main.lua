@@ -7,6 +7,8 @@ require 'client'
 require 'Chat'
 require 'StateMachine'
 require 'Button'
+require 'TextBox'
+require 'DropdownBox'
 require 'states/PlayState'
 require 'states/MenuState'
 require 'states/LevelCreationState'
@@ -42,7 +44,11 @@ gFonts = {
 
 gColors = {
 	['black'] = {0,0,0},
-	['white'] = {255,255,255}
+	['white'] = {255,255,255},
+	['red'] = {255,0,0},
+	['green'] = {0,255,0},
+	['blue'] = {100,100,255},
+	
 }
 
 gStateMachine = StateMachine({
@@ -53,12 +59,90 @@ gStateMachine = StateMachine({
 
 })
 
+highCase = {
+	["1"] = '!',
+	["2"] = '@',
+	["3"] = '#',
+	["4"] = '$',
+	["5"] = '%',
+	["6"] = '^',
+	["7"] = '&',
+	["8"] = '*',
+	["9"] = '(',
+	["0"] = ')',
+	["`"] = '~',
+	["-"] = '_',
+	["="] = '+',
+	["["] = '{',
+	["]"] = '}',
+	["\\"] = '|',
+	[";"] = ':',
+	["'"] = '"',
+	[","] = '<',
+	["."] = '>',
+	["/"] = '?',
+	["q"] = 'Q',
+	["w"] = 'W',
+	["e"] = 'E',
+	["r"] = 'R',
+	["t"] = 'T',
+	["y"] = 'Y',
+	["u"] = 'U',
+	["i"] = 'I',
+	["o"] = 'O',
+	["p"] = 'P',
+	["a"] = 'A',
+	["s"] = 'S',
+	["d"] = 'D',
+	["f"] = 'F',
+	["g"] = 'G',
+	["h"] = 'H',
+	["j"] = 'J',
+	["k"] = 'K',
+	["l"] = 'L',
+	["z"] = 'Z',
+	["x"] = 'X',
+	["c"] = 'C',
+	["v"] = 'V',
+	["b"] = 'B',
+	["n"] = 'N',
+	["m"] = 'M',
+}
+
+function love.mouse.getAbsPos()
+	mx, my = love.mouse.getPosition()
+	mx = mx/3
+	my = my/3
+	
+	return mx, my
+
+end
+
+mscrollx = 0
+mscrolly = 0
+mvelx = 0
+mvely = 0
+function love.wheelmoved(x, y)
+	mvelx = mvelx + x * 20
+    mvely = mvely + y * 20
+end
+
+function scrollUpdate(dt)
+	mscrollx = mscrollx + mvelx * dt
+    mscrolly = mscrolly + mvely * dt
+ 
+    -- Gradually reduce the velocity to create smooth scrolling effect.
+    mvelx = mvelx - mvelx * math.min( dt * 10, 1 )
+    mvely = mvely - mvely * math.min( dt * 10, 1 )
+end
+
 function love.load()
 	love.keyboard.keysPressed = {}
 	love.window.setTitle("TTRPGC")
 	math.randomseed(os.time())
 	
-	
+	mvelx = 0
+	mvely = 0
 	
 	--set up rendering and scaling filter
 	love.graphics.setDefaultFilter("nearest", "nearest")
@@ -113,7 +197,7 @@ function love.resize(w, h)
 end
 
 function love.update(dt)
-	
+	scrollUpdate(dt)
 	gStateMachine:update(dt)
 	
 	
